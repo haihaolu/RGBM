@@ -30,20 +30,6 @@ def SetupData(name):
 
   return train_test_split(X, y, test_size=0.2, random_state=40)
 
-def plot_train_loss(gbts_list, name):
-  """
-  Plots the training loss versus number of epoches.
-  """
-  minimum = 0.0
-  fig = plt.figure()
-  sub = fig.add_subplot(111)
-  for i in range(len(gbts_list)):
-    sub.plot(gbts_list[i][0].train_loss - minimum, label="sample_size="+str(gbts_list[i][1]))
-  sub.set_xlabel('# weak learners')
-  sub.set_ylabel('mean logistic loss')
-  sub.legend()
-  fig.savefig('../figures/'+name+'_loss')
-
 def save_output(gbts_list, name):
   """
   Saves the output of RGBM.
@@ -60,6 +46,62 @@ def save_output(gbts_list, name):
            'test_loss_3': np.array(gbts_list[3][0].test_loss), 
            'sample_size': np.array([gbts_list[i][1] for i in range(len(gbts_list))]), 
            'running_time': np.array([gbts_list[i][2] for i in range(len(gbts_list))])})
+
+
+def plot_figures(name):
+  """
+  Plots the training and testing performance of the algorithm.
+  """
+  matfile = "output_" + name + ".mat"
+  data = scipy.io.loadmat("../output/" + matfile)
+
+  train_loss = {"0": data['train_loss_0'][0], "1": data['train_loss_1'][0], "2": data['train_loss_2'][0], "3": data['train_loss_3'][0]}
+  test_loss = {"0": data['test_loss_0'][0], "1": data['test_loss_1'][0], "2": data['test_loss_2'][0], "3": data['test_loss_3'][0]}
+  sample_size, running_time = data["sample_size"][0], data["running_time"][0]
+
+  fig = plt.figure()
+  xlims = np.zeros(4)
+  for i in range(4):
+    xlims[i] = sample_size[i]*len(train_loss[str(i)])
+    plt.plot(np.linspace(1, xlims[i], len(train_loss[str(i)])), train_loss[str(i)], label='t='+str(sample_size[i]))
+  plt.xlim(1, min(xlims))
+  plt.xscale('log')
+  if name == "YearPredictionMSD_t":
+    plt.yscale('log')
+  plt.legend()
+  fig.savefig('../figures/'+name+'_train_loss_count')
+
+  fig = plt.figure()
+  for i in range(4):
+    plt.plot(np.arange(1, 1+len(train_loss[str(i)])), train_loss[str(i)], label='t='+str(sample_size[i]))
+  plt.xlim(1, len(train_loss[str(0)]))
+  plt.xscale('log')
+  if name == "YearPredictionMSD_t":
+    plt.yscale('log')
+  plt.legend()
+  fig.savefig('../figures/'+name+'_train_loss_iteration')
+
+  fig = plt.figure()
+  xlims = np.zeros(4)
+  for i in range(4):
+    xlims[i] = sample_size[i]*len(test_loss[str(i)])
+    plt.plot(np.linspace(1, xlims[i], len(test_loss[str(i)])), test_loss[str(i)], label='t='+str(sample_size[i]))
+  plt.xlim(1, min(xlims))
+  plt.xscale('log')
+  if name == "YearPredictionMSD_t":
+    plt.yscale('log')
+  plt.legend()
+  fig.savefig('../figures/'+name+'_test_loss_count')
+
+  fig = plt.figure()
+  for i in range(4):
+    plt.plot(np.arange(1, 1+len(train_loss[str(i)])), test_loss[str(i)], label='t='+str(sample_size[i]))
+  plt.xlim(1, 1+len(test_loss[str(0)]))
+  plt.xscale('log')
+  if name == "YearPredictionMSD_t":
+    plt.yscale('log')
+  plt.legend()
+  fig.savefig('../figures/'+name+'_test_loss_iteration')
 
 
 """
@@ -99,10 +141,11 @@ if __name__ == "__main__":
       running_time = time.time() - start_time
       gbts_list.append((gbts, sample_size, running_time))
       num_iter = int(num_iter * np.exp(np.log(p)/3))
+      print("sample_size:" + str(sample_size) + ": running time: " + str(running_time))
 
-    plot_train_loss(gbts_list, name)
     save_output(gbts_list, name)
-    print("Finish training " + name + "; running time: " + str(running_time))
+    plot_figures(name)
+    print("Finish training " + name)
   
 
 
