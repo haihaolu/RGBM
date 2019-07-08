@@ -46,7 +46,7 @@ def plot_train_loss(gbts_list, name):
 
 def save_output(gbts_list, name):
   """
-  Saves the 
+  Saves the output of RGBM.
   """
   matfile = "../output/output_" + name
   scipy.io.savemat(matfile, 
@@ -61,12 +61,16 @@ def save_output(gbts_list, name):
            'sample_size': np.array([gbts_list[i][1] for i in range(len(gbts_list))]), 
            'running_time': np.array([gbts_list[i][2] for i in range(len(gbts_list))])})
 
+
+"""
+Trains the RGBM model, stores the outputs of the algorithm and compares the results.
+"""
 if __name__ == "__main__":
+  
   if len(sys.argv) == 2:
-    names = ["a1a", "a6a", "w1a", "mushrooms", "madelon", "YearPredictionMSD_t", "duke", "colon-cancer", "rcv1"]
+    names = ["a9a", "YearPredictionMSD_t", "colon-cancer", "rcv1"]
   else:
     names = sys.argv[2:]
-  # names = ["a1a"]
   for name in names:
     X_train, X_test, y_train, y_test = SetupData(name)
     print(len(y_train), len(y_test))
@@ -86,16 +90,10 @@ if __name__ == "__main__":
     p = np.shape(X_train)[1]
 
     num_iter = int(sys.argv[1])
-    # if name == "madelon":
-    #     num_iter = 3000
-    # if name == "rcv1":
-    #   num_iter = 1000
 
     for sample_size in np.logspace(np.log10(p), np.log10(1), num=4, dtype=int):
-    # for sample_size in [p]:
 
       gbts = GBTS(loss, derivative, sample_size, step_size)
-      # cProfile.run('gbts.train(train_data, num_iter)')
       start_time = time.time()
       gbts.train(train_data, num_iter, test_set=test_data)
       running_time = time.time() - start_time
@@ -104,7 +102,7 @@ if __name__ == "__main__":
 
     plot_train_loss(gbts_list, name)
     save_output(gbts_list, name)
-    print("Finish " + name)
+    print("Finish training " + name + "; running time: " + str(running_time))
   
 
 
