@@ -3,6 +3,7 @@ import sys
 import time
 import numpy as np
 from sklearn.metrics import mean_squared_error
+import time
 
 class Dataset(object):
   """
@@ -195,6 +196,8 @@ class GBTS(object):
     """
     models = []
     frequency_store_test_loss = num_boost_round // 1000
+    start_time = time.time()
+
     for iter_count in range(num_boost_round):
       self._update_training_data_scores(train_set, models)
       if test_set is not None:
@@ -207,7 +210,7 @@ class GBTS(object):
       self.train_loss = np.append(self.train_loss, self._compute_loss(self.train_scores, train_set))
       if test_set is not None:
         self.test_loss = np.append(self.test_loss, self._compute_loss(self.test_scores, test_set))
-      print(self.train_loss[-1])
+      # print(self.train_loss[-1])
 
     self._update_training_data_scores(train_set, models)
     self.train_loss = np.append(self.train_loss, self._compute_loss(self.train_scores, train_set))
