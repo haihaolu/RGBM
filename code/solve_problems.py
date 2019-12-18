@@ -14,6 +14,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import functional as F
 import time
+import os
 
 def SetupData(name):
   """
@@ -34,6 +35,9 @@ def save_output(gbts_list, num_iter, name):
   """
   Saves the output of RGBM.
   """
+  if not os.path.exists("../output"):
+    os.makedirs("../output")
+
   matfile = "../output/output_" + name + "_iter_" + str(num_iter)
   scipy.io.savemat(matfile, 
     mdict={'train_loss_0': np.array(gbts_list[0][0].train_loss),
@@ -66,6 +70,9 @@ def plot_figures(num_iter, name):
       plt.xlim(0, 100)
       if not if_log:
         plt.ylim(40,60)
+
+  if not os.path.exists("../figures"):
+    os.makedirs("../figures")
 
   matfile = "output_" + name + "_iter_" + str(num_iter) + ".mat"
   data = scipy.io.loadmat("../output/" + matfile)
