@@ -15,10 +15,10 @@ The code prints the final iteration training loss and testing loss for RGBM, sto
 
 To reproduce the figures appeared in the paper, run
 ```bash
-python libsvm_data.py 200 a9a
-python libsvm_data.py 200 colon-cancer
-python libsvm_data.py 20 rcv1
-python libsvm_data.py 200 YearPredictionMSD_t
+python solve_problems.py 200 a9a
+python solve_problems.py 200 colon-cancer
+python solve_problems.py 20 rcv1
+python solve_problems.py 200 YearPredictionMSD_t
 python plot_figures_from_output.py
 ```
 (Warning: rcv1 is a big dataset, and it can take a couple of hours to finish the run.)
