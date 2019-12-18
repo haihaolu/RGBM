@@ -11,7 +11,7 @@ Example: Train for 100 epoches of a1a by RGBM with different t value (size of th
 ```bash
 python libsvm_data.py 100 a1a
 ```
-The code prints the final iteration training loss and testing loss for RGBM, store the outputs at `../output/a1a.mat`.
+The code prints the final iteration training loss and testing loss for RGBM with different t values, store the outputs at `../output/a1a.mat`, and plot figures at `../figures/`.
 
 To reproduce the figures appeared in the paper, run
 ```bash
