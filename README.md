@@ -21,7 +21,7 @@ python solve_problems.py 20 rcv1
 python solve_problems.py 200 YearPredictionMSD_t
 python plot_figures_from_output.py
 ```
-(Warning: rcv1 is a big dataset, and it can take a couple of hours to finish the run.)
+(Warning: The above code can take a couple of hours to finish the run.)
 
 This code has been tested with Python 2.7.14.
 
