@@ -48,9 +48,7 @@ def plot_figures(num_iter, name):
   losses = [train_loss, test_loss]
   losses_name = ["train_loss", "test_loss"]
   colors = ['blue', 'orange', 'green', 'black', 'red']
-  # linestyles = [':', '-.', '--', '-', '-']
   linestyles = ['-', '-', '-', '-', '-']
-  # makers = ['.', 'o.', 'v', '<', '>']
 
   plt.rc('font', family='serif')
   plt.rc('xtick',labelsize=15)
@@ -60,23 +58,8 @@ def plot_figures(num_iter, name):
     fig = plt.figure(figsize=(8, 6.5))
     xlims = np.zeros(5)
     for i in range(5):
-      xlims[i] = sample_size[i]*len(losses[j][str(i)])/sample_size[0]
-      if j == 0:
-        plt.semilogy(np.linspace(0, xlims[i], len(losses[j][str(i)])), losses[j][str(i)]-train_min, color=colors[i], linestyle=linestyles[i], linewidth=2.0, label='t='+str(sample_size[i]))
-        # plt.plot(np.linspace(0, xlims[i], len(losses[j][str(i)])), losses[j][str(i)], color=colors[i], linestyle=linestyles[i], linewidth=2.0, label='t='+str(sample_size[i]))
-        set_up_figure(True)
-      else:
-        plt.plot(np.linspace(0, xlims[i], len(losses[j][str(i)])), losses[j][str(i)], color=colors[i], linestyle=linestyles[i], linewidth=2.0, label='t='+str(sample_size[i]))
-        set_up_figure(False)
-    fig.savefig('../figures/'+name+'_'+losses_name[j]+'_count')
-
-  for j in range(2):
-    fig = plt.figure(figsize=(8, 6.5))
-    xlims = np.zeros(5)
-    for i in range(5):
       xlims[i] = running_time[i]
       if j == 0:
-        # plt.plot(np.linspace(0, xlims[i], len(losses[j][str(i)])), losses[j][str(i)], color=colors[i], linestyle=linestyles[i], linewidth=2.0, label='t='+str(sample_size[i]))
         plt.semilogy(np.linspace(0, xlims[i], len(losses[j][str(i)])), losses[j][str(i)]-train_min, color=colors[i], linestyle=linestyles[i], linewidth=2.0, label='t='+str(sample_size[i]))
         set_up_figure(True)
       else:
@@ -84,24 +67,8 @@ def plot_figures(num_iter, name):
         set_up_figure(False)
     fig.savefig('../figures/'+name+'_'+losses_name[j]+'_time')
 
-  for j in range(2):
-    fig = plt.figure(figsize=(8, 6.5))
-    for i in range(5):
-      if j == 0:
-        plt.semilogy(np.arange(0, len(losses[j][str(i)])), losses[j][str(i)]-train_min, color=colors[i], linestyle=linestyles[i], linewidth=2.0, label='t='+str(sample_size[i]))
-        # plt.plot(np.arange(0, len(losses[j][str(i)])), losses[j][str(i)], color=colors[i], linestyle=linestyles[i], linewidth=2.0, label='t='+str(sample_size[i]))
-        set_up_figure(True)
-        if name == "rcv1":
-          plt.xlim(0, 500)
-      else:
-        plt.plot(np.arange(0, len(losses[j][str(i)])), losses[j][str(i)], color=colors[i], linestyle=linestyles[i], linewidth=2.0, label='t='+str(sample_size[i]))
-        set_up_figure(False)
-        if name == "rcv1":
-          plt.xlim(0, 500)
-    fig.savefig('../figures/'+name+'_'+losses_name[j]+'_iteration')
-
 if __name__ == "__main__":
-  names = ["a9a", "rcv1", "YearPredictionMSD_t", "colon-cancer", "duke"]
+  names = ["a9a", "rcv1", "YearPredictionMSD_t", "colon-cancer"]
   num_iter = [100, 10, 100, 100, 100]
   for i in range(len(names)):
     plot_figures(num_iter[i], names[i])

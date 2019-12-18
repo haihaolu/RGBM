@@ -126,7 +126,6 @@ if __name__ == "__main__":
     names = sys.argv[2:]
   for name in names:
     X_train, X_test, y_train, y_test = SetupData(name)
-    print(len(y_train), len(y_test))
     train_data = Dataset(X_train, y_train)
     test_data = Dataset(X_test, y_test)
 
@@ -153,9 +152,10 @@ if __name__ == "__main__":
       running_time = time.time() - start_time
       gbts_list.append((gbts, sample_size, running_time))
       num_iter = int(num_iter * np.exp(np.log(p)/4))
-      print("sample_size:" + str(sample_size) + ": running time: " + str(running_time))
+      print("t={}: final training loss={}, final testing loss={}.".format(
+        sample_size, gbts.train_loss[-1], gbts.test_loss[-1]))
       del gbts
 
     save_output(gbts_list, ori_iter, name)
     plot_figures(ori_iter, name)
-    print("Finish training " + name)
+    print("Finish training {}.".format(name))
