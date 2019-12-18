@@ -23,5 +23,5 @@ python plot_figures_from_output.py
 ```
 (Warning: rcv1 is a big dataset, and it can take a couple of hours to finish the run.)
 
-## This code has been tested with Python 2.7.14.
+This code has been tested with Python 2.7.14.
 
